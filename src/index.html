@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name = "viewport" content="width=device-width", initial-scale = 1.0>
+    <title>Забруднення повiтря</title>
+    <link rel="stylesheet" href="bootstrap/css/style.css"></link>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css"></link>
+    <link rel="stylesheet" href="animate.css"></link>
+    <link  rel="stylesheet"  href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"  />  
+    <script  src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+</head>
+
+<body>
+    <div id="vuePlace">
+        <div style="transition: height 1s; position: relative;" v-bind:style="(show!=false) ? 'height: 175px;' : 'height: 80px;'" class = "brd">
+                <select class="form-control" style="float: left; position: relative;width:auto; margin: 10px;" v-model="choosenCountry" value = "UA"  @click="change">
+                        <option v-for="element in countries">
+                            {{element}}
+                        </option>
+                </select>
+                <button class="btn btn-primary" style="float: left; position: relative; margin: 10px;" @click="addCountrie">
+                    Выбрать
+                </button>
+                <br/>
+                <div class="animated fadeIn" style="height:1px;"v-if="(loading==false)&&(showCities==true)">
+                    <select class="form-control" v-model="choosenCity" style="float: left; position: relative;width:160px; margin-left: 10px;margin-right: 10px;margin-bottom: 10px;">
+                        <option v-for="element in cities">
+                            {{element}}
+                        </option>
+                    </select>
+                    <button class="btn btn-primary"  style="float: right; margin-left: 10px;margin-right: 10px;margin-bottom: 10px;" @click="addCity">
+                        Добавить в сравнение
+                    </button>
+                    <br/>
+                        <img src="img/2.png" class="chartIcon"@click="chartType='bar';redraw();">
+                        <img src="img/1.png" class="chartIcon" @click="chartType='line';redraw();">
+                        <img src="img/3.png" class="chartIcon"@click="chartType='doughnut';redraw();">                    
+                </div>
+                <div v-else-if="(loading==true)&&(showCities==false)">
+                    <label class="label label-info animated fadeIn slower" style="position: relative; margin: 13px; font-size: 25px; opacity: 0.4; font-weight: 200;">Загрузка...</label>
+                </div>
+                <div v-else-if="(loading==false)&&(showCities==false)">
+                </div>
+        </div>
+        <div style="transition: opacity 1s;" class="chartPlace" v-bind:style="(showChart==true) ? 'visibility: visible':'visibility:visible'">
+            <canvas id="myChart" width="3" height="1.5"></canvas>
+        </div>  
+        <div class="cityBrd animated fadeIn" v-if="showChart==true">
+            <div id = "map" class="animated fadeIn" style="float: left;  top: -280px;position: relative; margin: 10px; height: 500px; width: 500px;"></div>
+            <div style="float: left; top: -280px; position: relative; margin: 10px; font-size: 27px; opacity: 0.6; font-weight: 500; width: 400px;" class="label label-info animated fadeIn slower">
+                <h2 id="nameLabel"></h2>
+                <h4 id="descriptionLabel"></h4>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="main.js" ></script>
+
+</html>
